@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تواصل معنا</title>
+
+  <!-- reCAPTCHA v3 (تم وضع الـ Site Key الخاص بك هنا) -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6LcgYS4uAAAAAOXFSI1q9QfYMbycypdPgr5gCSBf"></script>
+
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --primary-dark: #0b5ed7;
+      --success: #198754;
+      --success-dark: #146c43;
+      --danger: #dc3545;
+      --border: #d0d7e2;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #eef2f7 0%, #e3ecf7 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+      color: var(--text);
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(13, 110, 253, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 460px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 { margin: 0 0 6px; font-size: 22px; }
+    .subtitle { margin: 0 0 22px; font-size: 14px; color: var(--muted); }
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      font-size: 14px;
+      font-family: inherit;
+      background: #fbfcfe;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    }
+
+    textarea { resize: vertical; min-height: 100px; }
+
+    input.invalid, textarea.invalid {
+      border-color: var(--danger);
+      background: #fff5f5;
+    }
+
+    .error-msg {
+      display: none;
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    .error-msg.show { display: block; }
+
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      height: 0; width: 0;
+      overflow: hidden;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover:not(:disabled) { background: var(--primary-dark); }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    button.loading .spinner { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    .result.error {
+      display: block;
+      background: #fdecec;
+      color: var(--danger);
+      border: 1px solid #f5b5b5;
+    }
+
+    #thanksView {
+      display: none;
+      text-align: center;
+      padding: 40px 28px;
+    }
+    #thanksView.show { display: block; }
+
+    .check-circle {
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      background: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4); }
+      70%  { box-shadow: 0 0 0 18px rgba(25, 135, 84, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+    }
+
+    .check-circle svg {
+      width: 44px; height: 44px;
+      stroke: #fff;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: drawCheck 0.6s ease 0.3s forwards;
+    }
+    @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+    #thanksView h1 { margin: 0 0 10px; font-size: 24px; color: var(--success-dark); }
+    #thanksView p { margin: 0 0 20px; font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .countdown { font-weight: bold; color: var(--success-dark); font-size: 16px; }
+    .btn-back {
+      display: inline-block; margin-top: 18px; padding: 12px 26px;
+      background: var(--success); color: #fff; text-decoration: none;
+      border-radius: 8px; font-weight: bold; font-size: 15px; border: none;
+      cursor: pointer; transition: background 0.2s, transform 0.1s;
+    }
+    .btn-back:hover { background: var(--success-dark); }
+    .btn-back:active { transform: scale(0.98); }
+
+    @media (max-width: 480px) {
+      .card { padding: 20px; }
+      h2 { font-size: 19px; }
+      #thanksView { padding: 32px 20px; }
+      #thanksView h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <form class="card" id="formView" novalidate>
+    <h2>أرسل بياناتك</h2>
+    <p class="subtitle">سنعاود التواصل معك في أقرب وقت ممكن.</p>
+
+    <div class="honeypot" aria-hidden="true">
+      <label for="company_website">Website</label>
+      <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label for="full_name">الاسم الكامل</label>
+      <input type="text" id="full_name" name="full_name" required autocomplete="name" />
+      <span class="error-msg" id="err_full_name">الرجاء إدخال الاسم (3 أحرف على الأقل).</span>
+    </div>
+
+    <div class="field">
+      <label for="phone">رقم الهاتف</label>
+      <input type="tel" id="phone" name="phone" required inputmode="tel" autocomplete="tel"
+             placeholder="مثال: 01012345678 أو +201012345678" />
+      <span class="error-msg" id="err_phone">أدخل رقم هاتف صحيح (8 إلى 15 رقم، مع + اختياري).</span>
+    </div>
+
+    <div class="field">
+      <label for="email">البريد الإلكتروني</label>
+      <input type="email" id="email" name="email" required autocomplete="email" />
+      <span class="error-msg" id="err_email">أدخل بريداً إلكترونياً صحيحاً.</span>
+    </div>
+
+    <div class="field">
+      <label for="notes">رسالتك أو ملاحظاتك</label>
+      <textarea id="notes" name="notes" rows="4" required></textarea>
+      <span class="error-msg" id="err_notes">الرجاء كتابة رسالة (10 أحرف على الأقل).</span>
+    </div>
+
+    <button type="submit" id="submitBtn">
+      <span>إرسال</span>
+      <span class="spinner"></span>
+    </button>
+
+    <div class="result error" id="result" role="status" aria-live="polite"></div>
+  </form>
+
+  <div class="card" id="thanksView" role="status" aria-live="polite">
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24">
+        <polyline points="5 13 10 18 19 7"></polyline>
+      </svg>
+    </div>
+    <h1>تم الإرسال بنجاح!</h1>
+    <p>شكراً لتواصلك معنا.<br />استلمنا رسالتك وسنعاود التواصل معك في أقرب وقت ممكن.</p>
+    <p class="countdown">سيتم إرجاعك إلى النموذج خلال <span id="seconds">10</span> ثانية...</p>
+    <button class="btn-back" id="backBtn" type="button">العودة الآن</button>
+  </div>
+
+  <script>
+    (function () {
+      // ⚠️ ضع هنا الـ endpoint الخاص بك من Formspree
+      const ENDPOINT = 'https://formspree.io/f/xkjrprgv';
+
+      // تم وضع الـ Site Key الخاص بك هنا
+      const RECAPTCHA_SITE_KEY = '6LcgYS4uAAAAAOXFSI1q9QfYMbycypdPgr5gCSBf';
+      const COUNTDOWN_SECONDS = 10;
+
+      const formView    = document.getElementById('formView');
+      const thanksView  = document.getElementById('thanksView');
+      const form        = formView;
+      const submitBtn   = document.getElementById('submitBtn');
+      const result      = document.getElementById('result');
+      const honeypot    = document.getElementById('company_website');
+      const secondsEl   = document.getElementById('seconds');
+      const backBtn     = document.getElementById('backBtn');
+
+      const fields = {
+        full_name: document.getElementById('full_name'),
+        phone:     document.getElementById('phone'),
+        email:     document.getElementById('email'),
+        notes:     document.getElementById('notes'),
+      };
+
+      const validators = {
+        full_name: (v) => v.trim().length >= 3,
+        phone:     (v) => /^\+?[0-9]{8,15}$/.test(v.trim().replace(/[\s\-]/g, '')),
+        email:     (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+        notes:     (v) => v.trim().length >= 10,
+      };
+
+      function validateField(name) {
+        const input = fields[name];
+        const ok = validators[name](input.value);
+        input.classList.toggle('invalid', !ok);
+        document.getElementById('err_' + name).classList.toggle('show', !ok);
+        return ok;
+      }
+
+      Object.keys(fields).forEach((name) => {
+        fields[name].addEventListener('blur',  () => validateField(name));
+        fields[name].addEventListener('input', () => {
+          if (fields[name].classList.contains('invalid')) validateField(name);
+        });
+      });
+
+      function validateAll() {
+        return Object.keys(fields).every((name) => validateField(name));
+      }
+
+      function showError(message) {
+        result.className = 'result error';
+        result.textContent = message;
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        submitBtn.classList.toggle('loading', isLoading);
+        submitBtn.querySelector('span').textContent = isLoading ? 'جارٍ الإرسال...' : 'إرسال';
+      }
+
+      let countdownTimer = null;
+
+      function resetToForm() {
+        if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+        thanksView.classList.remove('show');
+        formView.style.display = '';
+        form.reset();
+        Object.values(fields).forEach((el) => el.classList.remove('invalid'));
+        document.querySelectorAll('.error-msg').forEach((el) => el.classList.remove('show'));
+        result.className = 'result';
+        result.textContent = '';
+        setLoading(false);
+      }
+
+      function showThanks() {
+        formView.style.display = 'none';
+        thanksView.classList.add('show');
+
+        let remaining = COUNTDOWN_SECONDS;
+        secondsEl.textContent = remaining;
+
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(() => {
+          remaining -= 1;
+          secondsEl.textContent = remaining;
+          if (remaining <= 0) resetToForm();
+        }, 1000);
+      }
+
+      backBtn.addEventListener('click', resetToForm);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        result.className = 'result';
+
+        if (honeypot.value.trim() !== '') {
+          showThanks();
+          return;
+        }
+
+        if (!validateAll()) {
+          showError('الرجاء تصحيح الحقول المظللة بالأحمر.');
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          let token = '';
+          if (typeof grecaptcha !== 'undefined' && grecaptcha.execute) {
+            try {
+              token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' });
+            } catch (err) {
+              console.warn('reCAPTCHA error:', err);
+            }
+          }
+
+          const data = new FormData(form);
+          if (token) data.append('g-recaptcha-response', token);
+
+          const response = await fetch(ENDPOINT, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' },
+          });
+
+          if (response.ok) {
+            showThanks();
+          } else {
+            let msg = 'حدث خطأ أثناء الإرسال. حاول مرة أخرى.';
+            try {
+              const json = await response.json();
+              if (json && json.errors && json.errors.length) {
+                msg = json.errors.map((x) => x.message).join(' - ');
+              }
+            } catch (_) {}
+            showError('❌ ' + msg);
+            setLoading(false);
+          }
+        } catch (err) {
+          showError('❌ تعذر الاتصال بالخادم. تحقق من الإنترنت وحاول مجدداً.');
+          setLoading(false);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
